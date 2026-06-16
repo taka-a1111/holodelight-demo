@@ -47,15 +47,15 @@
     border:1px solid var(--line);color:var(--muted);text-align:center}
   .chip.active{background:#14302c;border-color:var(--go);color:#9af0e7}
 
-  .hero{flex:1;min-height:0;overflow-y:auto;background:linear-gradient(180deg,var(--panel),#13191f);border:1px solid var(--line);
+  .hero{flex:1;min-height:0;overflow:hidden;background:linear-gradient(180deg,var(--panel),#13191f);border:1px solid var(--line);
     border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:11px}
   .qbar{font-size:14px;font-weight:700;color:#BFD0DF;background:#0f1620;border:1px solid var(--line);
     border-radius:10px;padding:9px 12px;display:flex;gap:8px}
   .qbar .m{color:var(--live);flex:0 0 auto}
   .lock{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);font-weight:700}
-  .points{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
-  .points li{font-size:19px;font-weight:600;letter-spacing:-.01em;display:flex;gap:10px;align-items:flex-start}
-  .points li::before{content:"";flex:0 0 auto;width:8px;height:8px;border-radius:2px;background:var(--go);margin-top:9px}
+  .points{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:var(--pt,19px)}
+  .points li{font-size:inherit;font-weight:600;letter-spacing:-.01em;display:flex;gap:10px;align-items:flex-start}
+  .points li::before{content:"";flex:0 0 auto;width:8px;height:8px;border-radius:2px;background:var(--go);margin-top:.45em}
   .caution{margin-top:auto;font-size:13px;color:var(--warn);background:#2a1a12;border:1px solid #4a2c1d;border-radius:11px;padding:10px 12px}
   .caution::before{content:"⚠ "}
   .ph{color:var(--muted2);font-size:14.5px;flex:1;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.8}
@@ -84,6 +84,28 @@
 
   .note{flex:0 0 auto;font-size:10.5px;color:var(--muted2);text-align:center;line-height:1.45;max-height:28px;overflow:hidden}
   .err{color:var(--warn)}
+
+  /* 横長（PC等）：左に操作、右に回答パネルの2カラム */
+  @media (min-width:720px){
+    body{max-width:980px}
+    .body{display:grid;column-gap:14px;
+      grid-template-columns:minmax(260px,330px) 1fr;
+      grid-template-rows:auto auto auto 1fr;
+      grid-template-areas:
+        "chips  hero"
+        "answer hero"
+        "scribe hero"
+        "rowx   hero"
+        "note   hero";}
+    .chips{grid-area:chips}
+    .answerbtn{grid-area:answer}
+    .scribe{grid-area:scribe}
+    .row{grid-area:rowx}
+    .note{grid-area:note;align-self:start}
+    .hero{grid-area:hero;align-self:stretch}
+    .chips{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .chip{padding:11px 10px;font-size:13px}
+  }
 </style>
 </head>
 <body>
@@ -194,14 +216,21 @@ SEO実績=あるオウンドメディアで月3万→20万PV,18ヶ月120記事,�
     b.onclick=()=>{setActive(b);render({question:p.q,points:p.p,caution:p.c},"想定質問");};chipsEl.appendChild(b);});
   function setActive(el){[...chipsEl.children].forEach(c=>c.classList.remove("active"));if(el)el.classList.add("active");}
 
-  function render(a,tag){ph.style.display="none";
+  let lastAnswer=null;
+  function render(a,tag){ph.style.display="none";lastAnswer={a,tag};
     let h=`<div class="qbar"><span class="m">Q.</span><span>${esc(a.question||"")}</span></div>`;
     h+=`<ul class="points">`+a.points.map(p=>`<li>${esc(p)}</li>`).join("")+`</ul>`;
     if(a.caution)h+=`<div class="caution">${esc(a.caution)}</div>`;
     h+=`<div class="lock">${tag||"回答"}・固定表示中（次に押すまで変わりません）</div>`;
-    hero.innerHTML=h;}
-  function loading(){ph.style.display="none";hero.innerHTML=`<div class="ph"><span class="spin"></span>この質問の回答を生成中…</div>`;}
-  function showErr(m){ph.style.display="none";hero.innerHTML=`<div class="ph err" style="white-space:pre-line">${esc(m)}</div>`;}
+    hero.innerHTML=h;requestAnimationFrame(fitHero);}
+  function fitHero(){
+    const ul=hero.querySelector(".points");if(!ul)return;
+    let s=21;ul.style.fontSize=s+"px";let g=0;
+    while(hero.scrollHeight>hero.clientHeight && s>12 && g<60){s--;ul.style.fontSize=s+"px";g++;}
+  }
+  function loading(){ph.style.display="none";lastAnswer=null;hero.innerHTML=`<div class="ph"><span class="spin"></span>この質問の回答を生成中…</div>`;}
+  function showErr(m){ph.style.display="none";lastAnswer=null;hero.innerHTML=`<div class="ph err" style="white-space:pre-line">${esc(m)}</div>`;}
+  window.addEventListener("resize",()=>{if(lastAnswer)fitHero();});
 
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   const isiOS=/iP(hone|ad|od)/.test(navigator.userAgent);
