@@ -42,9 +42,8 @@
 
   .body{flex:1;min-height:0;display:flex;flex-direction:column;gap:9px;padding-top:9px}
 
-  .chips{flex:0 0 auto;display:flex;gap:7px;overflow-x:auto;overflow-y:hidden;padding-bottom:2px;-webkit-overflow-scrolling:touch}
-  .chips::-webkit-scrollbar{height:0}
-  .chip{flex:0 0 auto;white-space:nowrap;font-size:12.5px;font-weight:600;padding:9px 13px;border-radius:999px;background:var(--panel);
+  .chips{flex:0 0 auto;display:flex;flex-wrap:wrap;gap:6px}
+  .chip{flex:1 1 auto;white-space:nowrap;font-size:12px;font-weight:600;padding:8px 10px;border-radius:999px;background:var(--panel);
     border:1px solid var(--line);color:var(--muted);text-align:center}
   .chip.active{background:#14302c;border-color:var(--go);color:#9af0e7}
 
