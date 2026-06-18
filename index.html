@@ -16,6 +16,8 @@
   --blue:#054FA3;
   --blue-mid:#1273C9;
   --silver:#C5D7DE;
+  --silver-l:#E6EEF2;
+  --silver-d:#9DB3BE;
   --ink:#0a1622;
   --ink-soft:#12263b;
   --white:#ffffff;
@@ -174,10 +176,49 @@ section{position:relative;}
 /* ============ PRODUCT ============ */
 .product{background:var(--ink);position:relative;overflow:hidden;}
 .product::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 70% 30%,rgba(57,197,235,0.12),transparent 60%);
+  content:'';position:absolute;inset:-10%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(28% 34% at 18% 24%,rgba(80,200,225,0.22),transparent 60%),
+    radial-gradient(30% 32% at 78% 68%,rgba(150,100,225,0.20),transparent 60%),
+    radial-gradient(26% 28% at 56% 14%,rgba(110,225,180,0.16),transparent 60%),
+    radial-gradient(24% 30% at 28% 80%,rgba(220,120,200,0.16),transparent 60%),
+    radial-gradient(28% 26% at 86% 22%,rgba(230,180,110,0.13),transparent 60%),
+    radial-gradient(26% 30% at 12% 60%,rgba(120,220,225,0.14),transparent 60%);
+  filter:blur(34px) hue-rotate(0deg);
+  mix-blend-mode:screen;
+  animation:holoHueA 9s linear infinite,holoMoveA 22s ease-in-out infinite alternate;
 }
-.product .stars{position:absolute;inset:0;opacity:.6;}
+.product::after{
+  content:'';position:absolute;inset:-10%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(32% 30% at 50% 50%,rgba(120,180,235,0.14),transparent 65%),
+    radial-gradient(24% 26% at 14% 78%,rgba(180,120,225,0.12),transparent 60%),
+    radial-gradient(28% 24% at 85% 8%,rgba(110,230,210,0.12),transparent 60%),
+    radial-gradient(22% 24% at 64% 88%,rgba(235,160,140,0.10),transparent 60%);
+  filter:blur(42px) hue-rotate(0deg);
+  mix-blend-mode:screen;
+  animation:holoHueB 12s linear infinite reverse,holoMoveB 30s ease-in-out infinite alternate-reverse;
+}
+@keyframes holoHueA{
+  0%{filter:blur(34px) hue-rotate(0deg);}
+  100%{filter:blur(34px) hue-rotate(360deg);}
+}
+@keyframes holoHueB{
+  0%{filter:blur(42px) hue-rotate(0deg);}
+  100%{filter:blur(42px) hue-rotate(360deg);}
+}
+@keyframes holoMoveA{
+  0%{transform:translate(-3%,-2%) scale(1.04) rotate(-1deg);}
+  33%{transform:translate(2%,3%) scale(1.08) rotate(1.5deg);}
+  66%{transform:translate(-2%,-3%) scale(1.06) rotate(-1.5deg);}
+  100%{transform:translate(3%,2%) scale(1.10) rotate(1deg);}
+}
+@keyframes holoMoveB{
+  0%{transform:translate(2%,2%) scale(1.08) rotate(2deg);}
+  50%{transform:translate(-3%,-2%) scale(1.05) rotate(-2deg);}
+  100%{transform:translate(-2%,3%) scale(1.07) rotate(1deg);}
+}
+.product .stars{position:absolute;inset:0;opacity:.6;z-index:1;}
 .product-card{
   position:relative;z-index:2;text-align:center;max-width:760px;margin:0 auto;
 }
@@ -324,7 +365,88 @@ section{position:relative;}
   .panel-grid{padding:26px;}
   .member-grid{gap:20px;}
   .sec-title{font-size:1.5rem;}
+  /* HEROのバッジを1行に納める＋ヘッダーと重ならないよう上に余白 */
+  .hero{align-items:flex-start;}
+  .hero-inner{padding-top:110px;}
+  .hero-badge{
+    font-size:9.5px;letter-spacing:.13em;padding:6px 13px;
+    white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;
+    margin-bottom:24px;
+  }
 }
+
+/* ============ FX: 電子回路 + 光の粒子（ライトセクション） ============ */
+.fx{position:relative;isolation:isolate;}
+.fx > .wrap{position:relative;z-index:3;}
+/* 色のうねり（オーロラ層・ゆっくり多色が移ろう） */
+.fx::before{
+  content:'';position:absolute;inset:-12%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(38% 48% at 22% 28%,rgba(57,197,235,0.22),transparent 62%),
+    radial-gradient(42% 52% at 80% 70%,rgba(140,248,255,0.16),transparent 62%),
+    radial-gradient(46% 50% at 64% 16%,rgba(108,150,228,0.13),transparent 62%),
+    radial-gradient(40% 52% at 34% 82%,rgba(176,198,214,0.13),transparent 62%);
+  filter:blur(26px);
+  animation:auroraDrift 22s ease-in-out infinite alternate;
+}
+@keyframes auroraDrift{
+  0%{transform:translate(0,0) scale(1) rotate(0deg);}
+  50%{transform:translate(4%,-3%) scale(1.12) rotate(2deg);}
+  100%{transform:translate(-3%,3%) scale(1.06) rotate(-2deg);}
+}
+/* ===== ダーク用FX（CONTACT等） ===== */
+.fx-dark::before{
+  background:
+    radial-gradient(42% 50% at 18% 30%,rgba(57,197,235,0.32),transparent 62%),
+    radial-gradient(46% 56% at 84% 72%,rgba(140,248,255,0.24),transparent 62%),
+    radial-gradient(50% 52% at 60% 14%,rgba(108,150,228,0.20),transparent 62%),
+    radial-gradient(46% 56% at 32% 86%,rgba(176,198,214,0.16),transparent 62%);
+  filter:blur(32px);mix-blend-mode:screen;
+}
+/* ホログラム床（地面に投影された光の面） */
+.holo-floor{position:absolute;left:0;right:0;bottom:0;height:46%;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(180deg,transparent 0%,rgba(57,197,235,0.06) 40%,rgba(57,197,235,0.14) 100%),
+    repeating-linear-gradient(90deg,transparent 0,transparent 58px,rgba(140,248,255,0.18) 58px,rgba(140,248,255,0.18) 59px),
+    repeating-linear-gradient(180deg,transparent 0,transparent 26px,rgba(140,248,255,0.10) 26px,rgba(140,248,255,0.10) 27px);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 35%,#000 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 35%,#000 100%);
+  transform:perspective(620px) rotateX(62deg);transform-origin:50% 100%;
+  opacity:.55;
+  animation:holoFloor 14s linear infinite;
+}
+@keyframes holoFloor{
+  0%{background-position:0 0,0 0,0 0;}
+  100%{background-position:0 0,-58px 0,0 27px;}
+}
+/* ホログラム走査線（全FXセクション） */
+.fx::after{
+  background:
+    radial-gradient(120% 80% at 85% 8%,rgba(197,215,222,0.30),transparent 60%),
+    radial-gradient(90% 70% at 6% 96%,rgba(157,179,190,0.22),transparent 62%),
+    repeating-linear-gradient(180deg,transparent 0,transparent 3px,rgba(140,248,255,0.05) 3px,rgba(140,248,255,0.05) 4px);
+}
+.fx-dark::after{
+  background:
+    radial-gradient(120% 80% at 85% 8%,rgba(57,197,235,0.18),transparent 60%),
+    radial-gradient(90% 70% at 6% 96%,rgba(108,150,228,0.14),transparent 62%),
+    repeating-linear-gradient(180deg,transparent 0,transparent 3px,rgba(140,248,255,0.07) 3px,rgba(140,248,255,0.07) 4px);
+  mix-blend-mode:screen;
+}
+/* シルバーの面光（柔らかい銀の質感を全体に乗せる） */
+.fx::after{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(120% 80% at 85% 8%,rgba(197,215,222,0.30),transparent 60%),
+    radial-gradient(90% 70% at 6% 96%,rgba(157,179,190,0.22),transparent 62%);
+}
+/* 光の粒子レイヤー */
+.fx-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+/* セクション上辺のシルバー回路ライン（区切り装飾） */
+.circuit-rule{position:absolute;top:0;left:0;right:0;height:1px;z-index:2;
+  background:linear-gradient(90deg,transparent,rgba(157,179,190,0.0) 8%,rgba(57,197,235,0.45) 30%,rgba(197,215,222,0.55) 50%,rgba(57,197,235,0.45) 70%,transparent 92%);}
+/* 継ぎ目に固定ドットを置かない（ライン端の丸は削除） */
+
 </style>
 </head>
 <body>
@@ -377,7 +499,8 @@ section{position:relative;}
 </section>
 
 <!-- SERVICE -->
-<section class="service sec-pad" id="service">
+<section class="service sec-pad fx fx-ripple" id="service">
+  <div class="circuit-rule"></div><canvas class="fx-canvas"></canvas>
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="sec-tag">SERVICE</span>
@@ -390,7 +513,8 @@ section{position:relative;}
 </section>
 
 <!-- ABOUT -->
-<section class="about sec-pad" id="about">
+<section class="about sec-pad fx" id="about">
+  <div class="circuit-rule"></div><canvas class="fx-canvas"></canvas>
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="sec-tag">MEMBERS</span>
@@ -421,7 +545,8 @@ section{position:relative;}
 </section>
 
 <!-- COMPANY -->
-<section class="company sec-pad" id="company">
+<section class="company sec-pad fx fx-min" id="company">
+  <div class="circuit-rule"></div><canvas class="fx-canvas"></canvas>
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="sec-tag">COMPANY</span>
@@ -454,7 +579,9 @@ section{position:relative;}
 </section>
 
 <!-- CONTACT -->
-<section class="contact sec-pad" id="contact">
+<section class="contact sec-pad fx fx-dark" id="contact">
+  <canvas class="fx-canvas"></canvas>
+  <div class="holo-floor"></div>
   <div class="wrap">
     <div class="contact-inner reveal">
       <h2>未来の体験を、<br><span class="grad">一緒に。</span></h2>
@@ -551,29 +678,65 @@ nav.querySelectorAll('a').forEach(a=>a.onclick=()=>{burger.classList.remove('ope
 const ob=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:.15,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>ob.observe(el));
 
-/* ===== HERO PARTICLES (brand colored, fades over central KV logo) ===== */
+/* ===== HERO PARTICLES（白くキラッと光る星：十字スパイク＋淡いハロー） ===== */
 (function(){
   const c=document.getElementById('hero-canvas'),x=c.getContext('2d');let W,H,ps=[];
   function rs(){const r=c.parentElement.getBoundingClientRect();W=c.width=r.width;H=c.height=r.height;}
   rs();addEventListener('resize',()=>{rs();init();});
-  // 中央右（KVロゴの位置）を中心に粒子を減衰させるマスク係数 0..1
   function mask(px,py){
-    const cx=W*0.66, cy=H*0.52;            // KVロゴのおおよその中心
-    const rx=W*0.22, ry=H*0.34;            // 減衰させる楕円範囲
-    const d=Math.sqrt(((px-cx)/rx)**2+((py-cy)/ry)**2);
-    return Math.min(1,Math.max(0,(d-0.55)/0.6)); // 中心0 → 周辺1
+    // 右半分（KV画像側）には動く星を出さない（既に背景の星があるため）
+    if(px > W*0.55) return 0;
+    if(px > W*0.42) return (W*0.55 - px)/(W*0.13);
+    return 1;
   }
-  function init(){ps=[];const n=Math.min(80,Math.floor(W/18));for(let i=0;i<n;i++)ps.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.5+.5,a:Math.random()*.45+.25,col:Math.random()>0.5?'57,197,235':'18,115,201'});}
+  function init(){
+    ps=[];const n=Math.min(26,Math.floor(W/52));
+    for(let i=0;i<n;i++)ps.push({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.30,vy:(Math.random()-.5)*.30,
+      r:Math.random()*1.0+1.5,
+      ph:Math.random()*6.28,
+      hSc:0.85+Math.random()*0.55
+    });
+  }
   init();
-  function draw(){x.clearRect(0,0,W,H);
-    for(let i=0;i<ps.length;i++){const p=ps[i];p.x+=p.vx;p.y+=p.vy;
+  function draw(){
+    x.clearRect(0,0,W,H);
+    const t=performance.now()*0.001;
+    for(let i=0;i<ps.length;i++){
+      const p=ps[i];p.x+=p.vx;p.y+=p.vy;
       if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-      const mi=mask(p.x,p.y);
-      for(let j=i+1;j<ps.length;j++){const q=ps[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
-        if(d<120){const mj=mask(q.x,q.y);const lm=Math.min(mi,mj);
-          x.beginPath();x.strokeStyle='rgba(57,150,220,'+((1-d/120)*.16*lm).toFixed(3)+')';x.lineWidth=.5;x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke();}}
-      x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fillStyle='rgba('+p.col+','+(p.a*mi).toFixed(3)+')';x.fill();}
-    requestAnimationFrame(draw);}
+      const m=mask(p.x,p.y);
+      const pl=(.55+.45*Math.sin(t*2.2+p.ph))*m;
+      if(pl<.05)continue;
+      // 淡いブルーのハロー（外側）
+      const halo=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*7);
+      halo.addColorStop(0,'rgba(195,222,245,'+(.45*pl).toFixed(3)+')');
+      halo.addColorStop(.5,'rgba(195,222,245,'+(.16*pl).toFixed(3)+')');
+      halo.addColorStop(1,'rgba(195,222,245,0)');
+      x.fillStyle=halo;x.beginPath();x.arc(p.x,p.y,p.r*7,0,7);x.fill();
+      // 横長スパイク（参考画像の主役）
+      const lenH=p.r*22*p.hSc*pl;
+      const gH=x.createLinearGradient(p.x-lenH,p.y,p.x+lenH,p.y);
+      gH.addColorStop(0,'rgba(255,255,255,0)');
+      gH.addColorStop(.5,'rgba(200,225,245,'+(.92*pl).toFixed(3)+')');
+      gH.addColorStop(1,'rgba(255,255,255,0)');
+      x.strokeStyle=gH;x.lineWidth=.7;x.lineCap='round';
+      x.beginPath();x.moveTo(p.x-lenH,p.y);x.lineTo(p.x+lenH,p.y);x.stroke();
+      // 縦スパイク（やや短め）
+      const lenV=p.r*12*pl;
+      const gV=x.createLinearGradient(p.x,p.y-lenV,p.x,p.y+lenV);
+      gV.addColorStop(0,'rgba(255,255,255,0)');
+      gV.addColorStop(.5,'rgba(200,225,245,'+(.82*pl).toFixed(3)+')');
+      gV.addColorStop(1,'rgba(255,255,255,0)');
+      x.strokeStyle=gV;x.lineWidth=.6;
+      x.beginPath();x.moveTo(p.x,p.y-lenV);x.lineTo(p.x,p.y+lenV);x.stroke();
+      // 白いコア（小さく強く）
+      x.beginPath();x.arc(p.x,p.y,p.r,0,7);
+      x.fillStyle='rgba(190,220,245,'+(.95*pl).toFixed(3)+')';x.fill();
+    }
+    requestAnimationFrame(draw);
+  }
   draw();
 })();
 
@@ -589,6 +752,179 @@ document.querySelectorAll('.reveal').forEach(el=>ob.observe(el));
     requestAnimationFrame(draw);}
   draw();
 })();
+
+/* ===== LIGHT FX: 蠢くノードネットワーク＋多方向に伝播する光＋色のうねり（ライトセクション） ===== */
+(function(){
+  const SV='157,179,190';
+  const insts=[...document.querySelectorAll('.fx-canvas')].map(c=>({c,x:c.getContext('2d'),W:0,H:0,nd:[],pu:[],dust:[],on:false}));
+  function nearest(nd,fi,avoid){
+    let best=-1,bd=1e9;
+    for(let j=0;j<nd.length;j++){
+      if(j===fi||j===avoid)continue;
+      const dx=nd[j].x-nd[fi].x,dy=nd[j].y-nd[fi].y,d=dx*dx+dy*dy;
+      if(d<bd&&Math.random()<.75){bd=d;best=j;}
+    }
+    if(best<0){do{best=Math.floor(Math.random()*nd.length);}while(best===fi&&nd.length>1);}
+    return best;
+  }
+  function setup(o){
+    const r=o.c.parentElement.getBoundingClientRect();
+    o.W=o.c.width=r.width;o.H=o.c.height=r.height;
+    const minMode=o.c.closest('.fx-min')!==null;
+    const nn=minMode?Math.min(7,Math.max(4,Math.floor(o.W*o.H/150000))):Math.min(12,Math.max(6,Math.floor(o.W*o.H/90000)));
+    o.nd=[];
+    for(let i=0;i<nn;i++)o.nd.push({
+      x:Math.random()*o.W,y:Math.random()*o.H,
+      vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,
+      r:Math.random()*2.8+3.2,                 // ○を大きめに（数を減らした分サイズUP）
+      t:Math.random()<.78?'az':'sv',
+      hub:Math.random()<.34,                   // 一部を先進的なハブノードに
+      ph:Math.random()*6.28
+    });
+    const np=Math.max(2,Math.round(nn/6));
+    o.pu=[];
+    for(let i=0;i<np;i++){const f=Math.floor(Math.random()*nn);o.pu.push({from:f,to:nearest(o.nd,f,-1),t:Math.random(),sp:.005+Math.random()*.007});}
+    const ndst=minMode?Math.min(6,Math.floor(o.W/140)):Math.min(12,Math.floor(o.W/70));
+    o.dust=[];
+    for(let i=0;i<ndst;i++)o.dust.push({x:Math.random()*o.W,y:Math.random()*o.H,r:Math.random()*1.1+.3,a:Math.random(),s:.004+Math.random()*.009,vx:(Math.random()-.5)*.14,vy:(Math.random()-.5)*.14});
+    o.ripples=[];
+    o.nd.forEach(n=>n.cool=0);
+  }
+  insts.forEach(setup);
+  addEventListener('resize',()=>insts.forEach(setup));
+  const io=new IntersectionObserver(es=>es.forEach(e=>{const o=insts.find(o=>o.c===e.target);if(o)o.on=e.isIntersecting;}),{threshold:0});
+  insts.forEach(o=>io.observe(o.c));
+  let tick=0;
+  function draw(){
+    tick++;
+    // 色のうねり：青→シアン→青緑へゆっくり色相シフト
+    const hue=200+Math.sin(tick*0.005)*16;       // 184..216
+    const hueP=190+Math.sin(tick*0.004+1.0)*14;  // パルス側
+    for(const o of insts){
+      if(!o.on)continue;
+      const x=o.x,nd=o.nd;x.clearRect(0,0,o.W,o.H);
+      const darkBg=o.c.closest('.fx-dark')!==null;
+      // ノード移動（ゆらぎ＝多方向）
+      for(const n of nd){
+        n.vx+=(Math.random()-.5)*.018;n.vy+=(Math.random()-.5)*.018;
+        const sp=Math.hypot(n.vx,n.vy),mx=.30;
+        if(sp>mx){n.vx=n.vx/sp*mx;n.vy=n.vy/sp*mx;}
+        n.x+=n.vx;n.y+=n.vy;
+        if(n.x<0||n.x>o.W)n.vx*=-1;if(n.y<0||n.y>o.H)n.vy*=-1;
+        n.x=Math.max(0,Math.min(o.W,n.x));n.y=Math.max(0,Math.min(o.H,n.y));
+      }
+      // 衝突判定（接触したら波紋を発生・有効セクションのみ）
+      const ripple=o.c.closest('.fx-ripple')!==null;
+      if(ripple){
+        for(let i=0;i<nd.length;i++)for(let j=i+1;j<nd.length;j++){
+          const a=nd[i],b=nd[j];
+          if(a.cool>0||b.cool>0)continue;
+          const dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
+          const touch=38;
+          if(d<touch){
+            const cx=(a.x+b.x)/2,cy=(a.y+b.y)/2;
+            o.ripples.push({x:cx,y:cy,r:(a.r+b.r)*0.7,life:1.0});
+            a.cool=85;b.cool=85;
+          }
+        }
+      }
+      for(const n of nd){if(n.cool>0)n.cool--;}
+      // エッジ（色も時間で移ろう）
+      for(let i=0;i<nd.length;i++)for(let j=i+1;j<nd.length;j++){
+        const a=nd[i],b=nd[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<160){x.beginPath();x.strokeStyle='hsla('+hue.toFixed(1)+(darkBg?',80%,58%,':',55%,72%,')+((1-d/160)*(darkBg?.18:.14)).toFixed(3)+')';x.lineWidth=.6;x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();}
+      }
+      // 光沢スターの描画（ライト/ダーク背景で見え方を変える）
+      
+      const spikeMid=darkBg?'rgba(255,255,255,':'hsla('+hue.toFixed(1)+',68%,68%,';
+      const coreCol=darkBg?'rgba(255,255,255,':'hsla('+hue.toFixed(1)+',70%,72%,';
+      // ノード（光沢スター＋十字スパイク＋多重ハロー）
+      for(const n of nd){
+        const pl=.7+.3*Math.sin(tick*.018+n.ph);
+        const isSv=n.t==='sv';
+        const hueN=isSv?200:hue;
+        const sat=isSv?'58%':'82%';
+        // 外側の広いハロー（背景に応じて明度切替）
+        const halo=x.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*9);
+        const haloL1=darkBg?'78%':'82%';
+        const haloL2=darkBg?'72%':'76%';
+        const haloA1=darkBg?.30:.22;const haloA2=darkBg?.12:.08;
+        halo.addColorStop(0,'hsla('+hueN.toFixed(1)+','+sat+','+haloL1+','+(haloA1*pl).toFixed(3)+')');
+        halo.addColorStop(.45,'hsla('+hueN.toFixed(1)+','+sat+','+haloL2+','+(haloA2*pl).toFixed(3)+')');
+        halo.addColorStop(1,'transparent');
+        x.fillStyle=halo;x.beginPath();x.arc(n.x,n.y,n.r*9,0,7);x.fill();
+        // 内側の濃いグロー
+        const inner=x.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*3.6);
+        const innerL1=darkBg?'82%':'76%';
+        const innerL2=darkBg?'60%':'68%';
+        const innerA0=darkBg?.95:.72;const innerA1=darkBg?.72:.48;
+        inner.addColorStop(0,coreCol+(innerA0*pl).toFixed(3)+')');
+        inner.addColorStop(.35,'hsla('+hueN.toFixed(1)+','+sat+','+innerL1+','+(innerA1*pl).toFixed(3)+')');
+        inner.addColorStop(1,'hsla('+hueN.toFixed(1)+','+sat+','+innerL2+',0)');
+        x.fillStyle=inner;x.beginPath();x.arc(n.x,n.y,n.r*3.6,0,7);x.fill();
+        // 十字スパイク
+        const spikeLen=n.r*(n.hub?7.5:5.0)*pl;
+        let gH=x.createLinearGradient(n.x-spikeLen,n.y,n.x+spikeLen,n.y);
+        gH.addColorStop(0,'hsla('+hueN.toFixed(1)+','+sat+',82%,0)');
+        gH.addColorStop(.5,spikeMid+(.88*pl).toFixed(3)+')');
+        gH.addColorStop(1,'hsla('+hueN.toFixed(1)+','+sat+',82%,0)');
+        x.strokeStyle=gH;x.lineWidth=.8;x.lineCap='round';
+        x.beginPath();x.moveTo(n.x-spikeLen,n.y);x.lineTo(n.x+spikeLen,n.y);x.stroke();
+        // 十字スパイク（縦）
+        let gV=x.createLinearGradient(n.x,n.y-spikeLen,n.x,n.y+spikeLen);
+        gV.addColorStop(0,'hsla('+hueN.toFixed(1)+','+sat+',82%,0)');
+        gV.addColorStop(.5,spikeMid+(.88*pl).toFixed(3)+')');
+        gV.addColorStop(1,'hsla('+hueN.toFixed(1)+','+sat+',82%,0)');
+        x.strokeStyle=gV;x.lineWidth=.8;
+        x.beginPath();x.moveTo(n.x,n.y-spikeLen);x.lineTo(n.x,n.y+spikeLen);x.stroke();
+        // 純白のコア
+        x.beginPath();x.arc(n.x,n.y,n.r*.95,0,7);x.fillStyle=coreCol+(.98*pl).toFixed(3)+')';x.fill();
+        // ハブの外周リング
+        if(n.hub){
+          x.beginPath();x.arc(n.x,n.y,n.r+6,0,7);
+          x.strokeStyle='hsla('+hueN.toFixed(1)+','+sat+',75%,'+(.45*pl).toFixed(3)+')';
+          x.lineWidth=1;x.stroke();
+        }
+      }
+            // 光パルス（多方向に伝播・色も移ろう）
+      for(const pu of o.pu){
+        pu.t+=pu.sp;
+        if(pu.t>=1){pu.t=0;const arr=nd[pu.to];if(arr&&ripple&&o.ripples){o.ripples.push({x:arr.x,y:arr.y,r:arr.r*0.8,life:1.0});}const nx=nearest(nd,pu.to,pu.from);pu.from=pu.to;pu.to=nx;}
+        const a=nd[pu.from],b=nd[pu.to];if(!a||!b)continue;
+        const px=a.x+(b.x-a.x)*pu.t,py=a.y+(b.y-a.y)*pu.t;
+        x.beginPath();x.strokeStyle='hsla('+hueP.toFixed(1)+',95%,72%,'+(.42*(1-Math.abs(pu.t-.5)*2)).toFixed(3)+')';x.lineWidth=1.6;x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();
+        const g=x.createRadialGradient(px,py,0,px,py,14);
+        g.addColorStop(0,'hsla('+hueP.toFixed(1)+',95%,85%,0.95)');g.addColorStop(.4,'hsla('+hueP.toFixed(1)+',90%,62%,0.5)');g.addColorStop(1,'transparent');
+        x.beginPath();x.arc(px,py,14,0,7);x.fillStyle=g;x.fill();
+        x.beginPath();x.arc(px,py,2.4,0,7);x.fillStyle='rgba(255,255,255,.95)';x.fill();
+      }
+      // 波紋（衝突点から広がるリング・控えめ）
+      if(o.ripples&&o.ripples.length){
+        for(let i=o.ripples.length-1;i>=0;i--){
+          const rp=o.ripples[i];
+          rp.r+=1.6;
+          rp.life-=0.020;
+          if(rp.life<=0||rp.r>70){o.ripples.splice(i,1);continue;}
+          const a=Math.max(0,rp.life);
+          // 二重リング（よく見ると気づく程度の淡さ）
+          x.beginPath();x.arc(rp.x,rp.y,rp.r,0,7);
+          x.strokeStyle=darkBg?('rgba(170,225,245,'+(a*0.26).toFixed(3)+')'):('rgba(110,180,225,'+(a*0.22).toFixed(3)+')');
+          x.lineWidth=0.7;x.stroke();
+          x.beginPath();x.arc(rp.x,rp.y,rp.r*0.72,0,7);
+          x.strokeStyle=darkBg?('rgba(200,235,250,'+(a*0.18).toFixed(3)+')'):('rgba(140,195,230,'+(a*0.15).toFixed(3)+')');
+          x.lineWidth=0.5;x.stroke();
+        }
+      }
+      // 微細粒子（奥行き）
+      for(const d of o.dust){d.x+=d.vx;d.y+=d.vy;d.a+=d.s;if(d.a>1||d.a<.15)d.s*=-1;
+        if(d.x<0)d.x=o.W;if(d.x>o.W)d.x=0;if(d.y<0)d.y=o.H;if(d.y>o.H)d.y=0;
+        x.beginPath();x.arc(d.x,d.y,d.r,0,7);x.fillStyle='hsla('+hue.toFixed(1)+',80%,62%,'+(d.a*.4).toFixed(3)+')';x.fill();}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
 </script>
 </body>
 </html>
